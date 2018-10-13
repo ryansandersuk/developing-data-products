@@ -1,0 +1,26 @@
+---
+title: "Developing Data Products Week 3 Assignment"
+author: "Ryan Sanders"
+date: "10/13/2018"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Diamonds: Price vs Carat and Cut
+
+```{r plot, echo = FALSE, message = FALSE}
+library(plotly)
+
+plot_ly(
+    diamonds,
+    x = ~ carat,
+    y = ~ price,
+    type = "scatter",
+    color = ~ factor(cut),
+    mode = "markers",
+    opacity = 0.6
+)
+```
