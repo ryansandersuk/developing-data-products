@@ -21,7 +21,7 @@ Not all possible predictors are considered.
 
 ## Using lasso to select features -- build model
 
-Using the lasso with cross validation to select features, can see that constraining a linear model (through lambda) results in a lower mean squared error.
+Using the lasso with cross validation to select features, can see that constraining a linear model (through lambda) results in a lower mean squared error than using all available predictors.
 
 ```{r lasso_model, echo = TRUE}
 x <- model.matrix(mpg ~ ., mtcars)[, -1]
@@ -52,6 +52,6 @@ There is a high correlation between certain predictors, eg, displacement and cyl
 
 Out of the subset I selected, the best adjusted R squared was achieved with weight and number of cylinders. Displacement is also highly correlated with weight.
 
-```{r lasso_feature_selection, echo = TRUE}
+```{r correlations, echo = TRUE}
 cor(mtcars[, -1])
 ```
