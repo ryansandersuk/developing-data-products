@@ -1,0 +1,57 @@
+---
+title: "Developing Data Products Week 4 Assignment"
+author: "Ryan Sanders"
+date: "10/25/2018"
+output: slidy_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+library(glmnet)
+```
+
+## Predicting fuel efficiency (miles per gallon)
+
+The goal of this application is to see what predictors are best for predicting fuel efficiency using a linear model. The dataset used is mtcars.
+
+Evaluation is done simplisticly based on the R squared and adjusted R squared values, to show the variance explained by the model. Adding predictors always increases the R squared (albeit some times by a small amount), but the adjusted R squared can go up or down.
+
+Not all possible predictors are considered.
+
+## Using lasso to select features -- build model
+
+Using the lasso with cross validation to select features, can see that constraining a linear model (through lambda) results in a lower mean squared error.
+
+```{r lasso_model, echo = TRUE}
+x <- model.matrix(mpg ~ ., mtcars)[, -1]
+y <- mtcars$mpg
+
+model <- cv.glmnet(x, y, alpha = 1)
+plot(model)
+```
+
+## Using lasso to select features -- check coefficients
+
+Interestingly the features selected are different to the ones I chose. Displacement and number of forward gears are excluded, horsepower is included.
+
+```{r lasso_feature_selection, echo = TRUE}
+best_lambda <- model$lambda.min
+
+grid <- 10^seq(10, -2, length = 100)
+
+out <- glmnet(x, y, alpha = 1, lambda = grid)
+
+coefficients <- predict(out, type = "coefficients", s = best_lambda)
+coefficients
+```
+
+## Correlation between predictors
+
+There is a high correlation between certain predictors, eg, displacement and cylinders, displacement and number of cylinders and, horsepower and number of cylinders. Interestingly the lasso chose both horsepower and number of cylinders even though they are highly correlated.
+
+Out of the subset I selected, the best adjusted R squared was achieved with weight and number of cylinders. Displacement is also highly correlated with weight.
+
+```{r lasso_feature_selection, echo = TRUE}
+cor(mtcars[, -1])
+```
