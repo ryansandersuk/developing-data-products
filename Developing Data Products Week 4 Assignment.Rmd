@@ -17,7 +17,7 @@ The goal of this application is to see what predictors are best for predicting f
 
 Evaluation is done simplisticly based on the R squared and adjusted R squared values, to show the variance explained by the model. Adding predictors always increases the R squared (albeit some times by a small amount), but the adjusted R squared can go up or down.
 
-Not all possible predictors are considered.
+Not all possible predictors are considered. I chose what I thought were likely to be the best predictors. Let's see how good that selection was, as well as the best predictors from that selection.
 
 ## Using lasso to select features -- build model
 
